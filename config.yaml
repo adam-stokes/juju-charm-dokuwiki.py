@@ -3,11 +3,19 @@ options:
     type: string
     default: "98f0868c0cf9fc6664b57f89149fa537b73222bcc010247771e4afc08c8199fd"
     description: "Dokuwiki sha256 checksum"
-  host:
-    description: Host to be passed to php-fpm interface
+  admin_user:
     type: string
-    default: 0.0.0.0
-  port:
-    description: Port to be passed to php-fpm interface
-    type: int
-    default: 9000
+    default: admin
+    description: "Admin username (default: admin)"
+  admin_password:
+    type: string
+    default: "5f4dcc3b5aa765d61d8327deb882cf99"
+    description: "Admin password md5 hash format (default password: password)"
+  admin_name:
+    type: string
+    default: "The Admin"
+    description: Admin name
+  admin_email:
+    type: string
+    default: "admin@example.com"
+    description: Admin email
