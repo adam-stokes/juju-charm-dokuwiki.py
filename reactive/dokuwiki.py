@@ -34,7 +34,8 @@ def config_changed():
            context=config, perms=0o664)
     call('chown www-data:www-data -R {}'.format(app_path), shell=True)
     call('chmod 775 -R {}/conf'.format(app_path), shell=True)
-    call('chmod 775 -R {}/data'.format(app_path), shell=True)
+    call('mkdir -p {app_path}/data && chmod 775 -R {app_path}/data'.format(
+        app_path=app_path), shell=True)
 
     php.restart()
     service_restart('nginx')
