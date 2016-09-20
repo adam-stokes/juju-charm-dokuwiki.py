@@ -9,3 +9,5 @@ maintainers: ['Adam Stokes <adam.stokes@ubuntu.com>']
 tags:
   - php
   - wiki
+bugs-url: https://github.com/battlemidget/juju-charm-dokuwiki/issues
+homepage: https://github.com/battlemidget/juju-charm-dokuwiki
