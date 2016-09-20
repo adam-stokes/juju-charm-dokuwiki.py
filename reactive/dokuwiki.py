@@ -6,12 +6,18 @@ from charms.reactive import (
 )
 
 import os.path as path
-from charmhelpers.core import hookenv, host
+from charmhelpers.core import hookenv
+from charmhelpers.core.host import service_restart, lsb_release
 from charmhelpers.core.templating import render
 from subprocess import call
-from charms.layer import nginx, dokuwiki
+from charms.layer import nginx, dokuwiki, php
 
 config = hookenv.config()
+
+series = lsb_release()['DISTRIB_CODENAME']
+config['fpm_sock_path'] = '/var/run/php5-fpm.sock'
+if series == 'xenial':
+    config['fpm_sock_path'] = '/var/run/php/php7.0-fpm.sock'
 
 
 # HOOKS -----------------------------------------------------------------------
@@ -30,13 +36,14 @@ def config_changed():
     call('chmod 775 -R {}/conf'.format(app_path), shell=True)
     call('chmod 775 -R {}/data'.format(app_path), shell=True)
 
-    dokuwiki.restart()
-    host.service_restart('nginx')
+    php.restart()
+    service_restart('nginx')
     hookenv.status_set('active', 'Ready')
 
 
 # REACTORS --------------------------------------------------------------------
 @when('nginx.available')
+@when('php.ready')
 @only_once
 def install_app():
     """ Performs application installation
@@ -68,11 +75,6 @@ def install_app():
     # Clean up install.php as we don't need it
     call("rm -f {}/conf/install.php", shell=True)
 
-    # Fix php5 cgi.fix_pathinfo
-    call(
-        "sed 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' "
-        "/etc/php/7.0/fpm/php.ini", shell=True)
-
-    dokuwiki.restart()
-    host.service_restart('nginx')
+    php.restart()
+    service_restart('nginx')
     hookenv.status_set('active', 'Dokuwiki is installed!')

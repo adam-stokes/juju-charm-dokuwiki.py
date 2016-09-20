@@ -39,15 +39,3 @@ def download_archive():
     ))
     hookenv.log("Extracting Dokuwiki: {}".format(cmd))
     check_call(cmd, shell=True)
-
-
-def start():
-    check_call('service php7.0-fpm start', shell=True)
-
-
-def stop():
-    check_call('service php7.0-fpm stop', shell=True)
-
-
-def restart():
-    check_call('service php7.0-fpm restart', shell=True)
