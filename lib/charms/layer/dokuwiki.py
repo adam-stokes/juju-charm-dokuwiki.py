@@ -1,11 +1,10 @@
 import sys
 from os import path, makedirs
 from shutil import rmtree
-from charmhelpers.core import hookenv
-from hashlib import sha256
-from shell import shell
+from charmhelpers.core import hookenv, host
+from subprocess import call, check_call
 
-from nginxlib import get_app_path
+from charms.layer.nginx import get_app_path
 
 
 def download_archive():
@@ -17,21 +16,19 @@ def download_archive():
     app_path = get_app_path()
 
     config = hookenv.config()
-    shell('rm /tmp/dokuwiki.zip || true')
+    call('rm /tmp/dokuwiki.zip || true', shell=True)
     cmd = ('wget -q -O /tmp/dokuwiki.tgz '
            'http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz')
     hookenv.log("Downloading Dokuwiki: {}".format(cmd))
-    shell(cmd)
+    check_call(cmd, shell=True)
 
-    with open('/tmp/dokuwiki.tgz', 'rb') as fp:
-        dl_byte = sha256(fp.read())
-        if dl_byte.hexdigest() != config['checksum']:
-            hookenv.status_set(
-                'blocked',
-                'Downloaded Dokuwiki checksums do not match, '
-                'possibly because of a new stable release. '
-                'Check dokuwiki.org!')
-            sys.exit(0)
+    if host.file_hash('/tmp/dokuwiki.tgz', 'sha256') != config['checksum']:
+        hookenv.status_set(
+            'blocked',
+            'Downloaded Dokuwiki checksums do not match, '
+            'possibly because of a new stable release. '
+            'Check dokuwiki.org!')
+        sys.exit(0)
 
     if path.isdir(app_path):
         rmtree(app_path)
@@ -41,16 +38,16 @@ def download_archive():
         app_path
     ))
     hookenv.log("Extracting Dokuwiki: {}".format(cmd))
-    shell(cmd)
+    check_call(cmd, shell=True)
 
 
 def start():
-    shell('service php5-fpm start')
+    check_call('service php7.0-fpm start', shell=True)
 
 
 def stop():
-    shell('service php5-fpm stop')
+    check_call('service php7.0-fpm stop', shell=True)
 
 
 def restart():
-    shell('service php5-fpm restart')
+    check_call('service php7.0-fpm restart', shell=True)

@@ -1,3 +1,2 @@
 "server_name" = "_"
 "app_path" = "/srv/dokuwiki"
-"packages" = ["php5-cgi", "php5-curl", "php5-fpm", "php5-gd", "php5-json", "php5-mcrypt", "php5-readline"]

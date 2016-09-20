@@ -10,7 +10,7 @@ cases beyond a traditional wiki.
 
 # Usage
 
-    $ juju deploy cs:~adam-stokes/trusty/dokuwiki
+    $ juju deploy cs:~adam-stokes/dokuwiki
 
 ## Login
 
