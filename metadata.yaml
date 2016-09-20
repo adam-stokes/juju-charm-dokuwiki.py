@@ -6,8 +6,6 @@ description: |
   that doesn't require a database. It is loved by users for its clean and
   readable syntax.
 maintainers: ['Adam Stokes <adam.stokes@ubuntu.com>']
-series:
-  - xenial
 tags:
   - php
   - wiki
