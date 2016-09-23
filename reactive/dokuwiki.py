@@ -14,12 +14,6 @@ from charms.layer import nginx, dokuwiki, php
 
 config = hookenv.config()
 
-series = lsb_release()['DISTRIB_CODENAME']
-config['fpm_sock_path'] = '/var/run/php5-fpm.sock'
-if series == 'xenial':
-    config['fpm_sock_path'] = '/var/run/php/php7.0-fpm.sock'
-
-
 # HOOKS -----------------------------------------------------------------------
 @hook('config-changed')
 def config_changed():
@@ -53,7 +47,8 @@ def install_app():
     hookenv.log('Installing Dokuwiki', 'info')
 
     # Configure NGINX vhost
-    nginx.configure_site('default', 'vhost.conf')
+    nginx.configure_site('default', 'vhost.conf',
+                         listen_address=php.socket())
 
     # Update application
     dokuwiki.download_archive()
