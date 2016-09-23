@@ -1,11 +1,11 @@
 includes: ['layer:basic', 'layer:nginx', 'layer:apt', 'layer:php']
 repo: https://github.com/battlemidget/juju-charm-dokuwiki
 options:
-  basic:
+  php-fpm:
     packages:
-      - php-cgi
-      - php-curl
-      - php-gd
-      - php-json
-      - php-mcrypt
-      - php-readline
+      - cgi
+      - curl
+      - gd
+      - json
+      - mcrypt
+      - readline
