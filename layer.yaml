@@ -9,3 +9,4 @@ options:
       - json
       - mcrypt
       - readline
+      - mbstring
