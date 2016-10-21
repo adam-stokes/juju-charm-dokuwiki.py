@@ -9,7 +9,7 @@ import yaml
 status_yaml=yaml.load(sys.stdin)
 print(status_yaml['applications']['dokuwiki']['units']['dokuwiki/0']['public-address'])
 "
-    juju-2.0 status ghost/0 --format yaml | env python3 -c "$py_script"
+    juju-2.0 status dokuwiki/0 --format yaml | env python3 -c "$py_script"
 }
 
 
@@ -26,4 +26,4 @@ fi
 
 conjure-up -d ./dokuwiki-spell localhost || exit 1
 
-curl --silent $(unitAddress)|grep -qP 'Welcome\sto\sGhost' || exit 1
+curl --silent $(unitAddress)|grep -qP 'dokuwiki' || exit 1
