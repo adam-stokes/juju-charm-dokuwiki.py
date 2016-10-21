@@ -7,12 +7,13 @@ from charms.reactive import (
 
 import os.path as path
 from charmhelpers.core import hookenv
-from charmhelpers.core.host import service_restart, lsb_release
+from charmhelpers.core.host import service_restart
 from charmhelpers.core.templating import render
 from subprocess import call
 from charms.layer import nginx, dokuwiki, php
 
 config = hookenv.config()
+
 
 # HOOKS -----------------------------------------------------------------------
 @hook('config-changed')
